@@ -53,14 +53,21 @@ app.use('/images', express.static(path.join(__dirname,'images')));
 // };
 // const sessionStore = new MySQLStore(options);
 
+// const options = {
+//   host: process.env.DB_HOST,
+//   port: process.env.DB_PORT,
+//   user: process.env.DB_USER,
+//   password: process.env.DB_PASSWORD,
+//   database: process.env.DB_NAME
+// };
 const options = {
   host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
+  port: process.env.DB_PORT || 3306,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+  database: process.env.DB_NAME || process.env.DB_DATABASE, // Handle both variable names
+  createDatabaseTable: true, // Will create the sessions table if it doesn't exist
 };
-
 const sessionStore = new MySQLStore(options);
 
 
@@ -184,7 +191,7 @@ app.get('/home', (req, res, next) => {
      })
      .catch(err => {
        console.error('Database Error:', err); // Detailed error logging
-       res.status(500).send('Internal Server Error');
+        return res.status(500).send('Internal Server Error');
      });
 });
 
@@ -393,7 +400,7 @@ app.use((req, res) => {
   res.status(404).sendFile(path.join(__dirname, '404.html'));
 });
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 10000;
 app.listen(port, () => {
   console.log('Server is running on http://localhost:8080');
 });

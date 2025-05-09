@@ -1,0 +1,19 @@
+<html>
+
+<head><title>DETAILS</title></head>
+<% if(mess&&mess.length>0) {%>
+    <%= mess %>
+    <% } %>
+<body>
+    <h1>NAME OF THE PRODUCT: <%= title %></h1>
+    <img src="<%= image %>" alt="image" />
+    
+   <form action="/delete" method="post">
+    <input type="hidden" name="id" value='<%= id %>'/>
+    <button>DELETE</button>
+    
+   </form>
+
+</body>
+
+</html>
